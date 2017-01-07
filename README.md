@@ -37,7 +37,7 @@ Or, set with
 logic.revenue.set( 150 );
 ```
 
-When we set a variable or a function, then the functions that depend on it, will get recalculated. In case of the above example,
+When we set a variable or a function, then the functions that depend on it, will get recalculated. In the example above,
 
 ```javascript
 logic.profit.get();        // Returns 50
