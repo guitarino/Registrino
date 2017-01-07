@@ -137,20 +137,21 @@ var logic = Registrino(function(r) {
     });
 })();
 
-var ui = Registrino(function(r) {
-    r.fun(logic.total_cost).is(function(cost) {
+// UI dependencies
+Registrino(logic, function(r) {
+    r.fun(r.total_cost).is(function(cost) {
         elements.total_cost.textContent = cost;
     });
 
-    r.fun(logic.total_revenue).is(function(cost) {
+    r.fun(r.total_revenue).is(function(cost) {
         elements.total_revenue.textContent = cost;
     });
 
-    r.fun(logic.profit).is(function(cost) {
+    r.fun(r.profit).is(function(cost) {
         elements.profit.textContent = cost;
     });
 
-    r.fun(logic.error).is(function(error) {
+    r.fun(r.error).is(function(error) {
         if(error) {
             elements.error.style.display = "";
         }
@@ -159,7 +160,7 @@ var ui = Registrino(function(r) {
         }
     });
 
-    r.fun(logic.error_description).is(function(descr) {
+    r.fun(r.error_description).is(function(descr) {
         elements.error.innerHTML = descr.map(function(error) {
             return "<p>" + error + "</p>";
         }).join('');
