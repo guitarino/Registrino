@@ -40,7 +40,8 @@ logic.revenue.set( 150 );
 When we set a variable or a function, then the functions that depend on it, will get recalculated. In case of the above example,
 
 ```javascript
-logic.profit.get(); // Returns 50
-logic.revenue.set( 250 ); // Setting the revenue to 250 instead of 150
-logic.profit.get(); // Returns 150
+logic.profit.get();        // Returns 50
+logic.revenue.set( 250 );  // Setting the revenue to 350 instead of 150
+logic.profit.get();        // Returns 250
 ```
+
