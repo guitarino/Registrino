@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Profit calculation</title>
+    <script src="../../src/Registrino.js"></script>
+    <style>
+        table {
+            margin-bottom: 40px;
+        }
+        input {
+            display: block;
+        }
+        span {
+            font-weight: bold;
+        }
+        #error {
+            margin-top: 40px;
+            color: darkred;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr><td>Details produced: </td><td><input id="details_produced" type="number" value="5" /></td></tr>
+        <tr><td>Detail cost: </td><td><input id="detail_cost" type="number" value="100" /></td></tr>
+        
+        <tr><td>Details sold: </td><td><input id="details_sold" type="number" value="4" /></td></tr>
+        <tr><td>Detail price: </td><td><input id="detail_price" type="number" value="150" /></td></tr>
+    </table>
+
+    <div>Total Cost: <span id="total_cost"></span></div>
+    <div>Total Revenue: <span id="total_revenue"></span></div>
+    <div>Total Profit: <span id="profit"></span></div>
+
+    <div id="error" style="display: none;"></div>
+
+    <script src="example.js"></script>
+</body>
+</html>
