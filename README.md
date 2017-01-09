@@ -60,12 +60,12 @@ When we set a variable or a function, then the functions that depend on it will 
 
 ```javascript
 logic.profit.get();        // Returns 50
-logic.revenue.set( 250 );  // Setting the revenue to 350 instead of 150
+logic.revenue.set( 350 );  // Setting the revenue to 350 instead of 150
 logic.profit.get();        // Returns 250
 ```
 
 This approach is similar to a spreadsheet-like functionality and can be especially useful for
 * Specifying behaviour more declaratively
-* Implementing reactive DOM
-* Working with changing state
+* Implementing reactive DOM and templating systems
+* Working with changing app or component state
 * Creating customization system for [Custom Elements](https://developers.google.com/web/fundamentals/getting-started/primers/customelements)
