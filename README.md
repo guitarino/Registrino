@@ -11,17 +11,27 @@ The idea behind `Registrino` is simple: we register some variables and functions
 For example,
 
 ```javascript
+// This creates a registry `logic`
 var logic = Registrino(function(r) {
   var
-    revenue = r.var( 150 ), // Registering a variable with a value 150
-    cost    = r.var( 100 ), // Registering a variable with a value 100
+    revenue = r.var( 150 ), // Creates a variable `revenue` with a value 150
+    cost    = r.var( 100 ), // Creates a variable `cost` with a value 100
     
-    // Registering a function that depdends on *revenue* and *cost*
+    // Creates a function that depdends on `revenue` and `cost` and
+    // will get recalculated every time `revenue` or `cost` changes
     profit  = r.fun(revenue, cost).is(function(revenue, cost) {
       return revenue - cost;
     })
   ;
+  
+  // We can create "hidden" functions that are not accessible for the
+  // user, but will still update whenever their dependencies change,
+  // for example, for DOM updates.
+  r.fun(profit).is(function(profit) {
+    console.log("Profit is", profit);
+  });
 
+  // By returning the properties, we ensure they will appear in registry `logic`.
   return {
     revenue : revenue,
     cost    : cost,
@@ -30,7 +40,9 @@ var logic = Registrino(function(r) {
 });
 ```
 
-This example registers variables `revenue` and `cost`, and a function `profit`, which is automatically calculated as `revenue` minus `cost`. Every function and variable has a value that we can get with
+This example registers variables `revenue` and `cost`, and a function `profit`, which is automatically calculated as `revenue` minus `cost`. Then, we register a hidden function, which will output `profit` whenever it changes.
+
+Every function and variable has a value that we can get with
 
 ```javascript
 logic.profit.get(); // Returns 50
@@ -55,5 +67,5 @@ logic.profit.get();        // Returns 250
 This approach is similar to a spreadsheet-like functionality and can be especially useful for
 * Specifying behaviour more declaratively
 * Implementing reactive DOM
-* Working with state
+* Working with changing state
 * Creating customization system for [Custom Elements](https://developers.google.com/web/fundamentals/getting-started/primers/customelements)
