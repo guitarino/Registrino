@@ -70,7 +70,25 @@ This approach is similar to a spreadsheet-like functionality and can be especial
 * Creating customization system for [Custom Elements](https://developers.google.com/web/fundamentals/getting-started/primers/customelements)
 
 ## How to
-To understand how this works without delving into API, see commented examples under **/demo** folder.
+To understand how this works without delving into API, see commented examples under **[/demo](https://github.com/guitarino/Registrino/tree/master/demo)** folder.
+
+## Install
+
+### Browser
+Add
+
+```html
+<script src="path/to/Registrino.js"></script>
+```
+
+to your HTML page
+
+### NodeJS
+Include Registrino as a NodeJS module
+
+```javascript
+var Registrino = require('./path/to/Registrino.js');
+```
 
 ## Definitions for API
 These definitions will be useful for understanding API:
@@ -155,20 +173,5 @@ It's possible to create **Registry Functions** and **Variables** without creatin
 
 You can use both methods in the same way as **Registry** object's properties `.var` and `.fun` but without actually having a **Registry**.
 
-## Install
-
-### Browser
-Add
-
-```html
-<script src="path/to/Registrino.js"></script>
-```
-
-to your HTML page
-
-### NodeJS
-Include Registrino as a NodeJS module
-
-```javascript
-var Registrino = require('./path/to/Registrino.js');
-```
+## License
+[MIT License](https://github.com/guitarino/Registrino/blob/master/LICENSE)
