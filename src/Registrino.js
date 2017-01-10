@@ -199,35 +199,9 @@ var Registrino = (function() {
     };
 
     /**
-     * Creates an instance of a registry
-     */
-    var r = function() {
-        return this;
-    };
-
-    /**
-     * Every registry has a method `var` to create a Registrino Variable
-     */
-    r.prototype.var = function(value) {
-        var v = new Fun();
-        v.set(value);
-        return v;
-    };
-
-    /**
-     * Every registry has a method `fun` to create a Registrino Function
-     */
-    r.prototype.fun = function() {
-        var args = Array.prototype.slice.call(arguments, 0);
-        var fun = new Fun();
-        fun.of(args);
-        return fun;
-    };
-
-    /**
      * Convenience method for defining registries / Registrino Variables / Functions
      */
-    return function Registrino() {
+    var Registrino = function() {
         var registry, define;
 
         if(arguments.length <= 1) {
@@ -279,4 +253,36 @@ var Registrino = (function() {
 
         return registry;
     };
+
+    Registrino.createVariable = function(value) {
+        var v = new Fun();
+        v.set(value);
+        return v;
+    };
+
+    Registrino.createFunction = function() {
+        var args = Array.prototype.slice.call(arguments, 0);
+        var fun = new Fun();
+        fun.of(args);
+        return fun;
+    };
+
+    /**
+     * Creates an instance of a registry
+     */
+    var r = function() {
+        return this;
+    };
+
+    /**
+     * Every registry has a method `var` to create a Registrino Variable
+     */
+    r.prototype.var = Registrino.createVariable;
+
+    /**
+     * Every registry has a method `fun` to create a Registrino Function
+     */
+    r.prototype.fun = Registrino.createFunction;
+
+    return Registrino;
 })();
