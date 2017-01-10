@@ -103,12 +103,18 @@ These definitions will be useful for understanding API:
 ### Registry Function / Variable
 Each instance of **Registry Function** or **Variable** (eg, `logic.profit` or `logic.revenue` above) contains the following methods in its prototype:
 
-* `.of( deps )`, where `deps` is an array specifying the intended dependencies. Sets the dependencies and returns the **Registry Function** itself to allow chaining.
+* `.of( deps )`, where `deps` is an array specifying the intended dependencies.
+    
+    Sets the dependencies and returns the **Registry Function** itself to allow chaining.
 
-* `.is( fun )`, where `fun` is the function according to which the value will be calculated. Sets the function and returns the **Registry Function** itself to allow chaining.
-    * Note: when **Function**'s dependencies changed, `fun` will be called with parameters `val1`, ... `valN`, `old_val1`, ... `old_valN`, which are the new values of its dependencies followed by old values of those same dependencies. The values will appear in the same order as specified when creating the **Function** or specifying dependencies with `.of( deps )`.
+* `.is( fun )`, where `fun` is the function according to which the value will be calculated.
+    
+    Sets the function and returns the **Registry Function** itself to allow chaining.
+        * Note: when the **Function**'s dependencies changed, `fun` will be called with parameters `val1`, ... `valN`, `old_val1`, ... `old_valN`, which are the new values of its dependencies followed by old values of those same dependencies. The values will appear in the same order as specified when creating the **Function** or specifying dependencies with `.of( deps )`.
 
-* `.set( value )`, where `value` is the new value. The change will trigger an update of its dependants. Returns the **Registry Function / Variable** itself to allow chaining.
+* `.set( value )`, where `value` is the new value.
+    
+    Sets the value; the change will trigger an update of its dependants. Returns the **Registry Function / Variable** itself to allow chaining.
 
 * `.get( )` returns the current value.
 
