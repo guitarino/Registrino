@@ -110,7 +110,7 @@ Each instance of **Registry Function** or **Variable** (eg, `logic.profit` or `l
 * `.is( fun )`, where `fun` is the function according to which the value will be calculated.
     
     Sets the function and returns the **Registry Function** itself to allow chaining.
-        * Note: when the **Function**'s dependencies changed, `fun` will be called with parameters `val1`, ... `valN`, `old_val1`, ... `old_valN`, which are the new values of its dependencies followed by old values of those same dependencies. The values will appear in the same order as specified when creating the **Function** or specifying dependencies with `.of( deps )`.
+    * Note: when the **Function**'s dependencies changed, `fun` will be called with parameters `val1`, ... `valN`, `old_val1`, ... `old_valN`, which are the new values of its dependencies followed by old values of those same dependencies. The values will appear in the same order as specified when creating the **Function** or specifying dependencies with `.of( deps )`.
 
 * `.set( value )`, where `value` is the new value.
     
