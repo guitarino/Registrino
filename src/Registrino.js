@@ -3,9 +3,8 @@ Copyright (c) 2016 guitarino
 MIT License
 */
 
-'use strict';
-
 var Registrino = (function() {
+    'use strict';
     // <some helpful methods>
 
     /**
@@ -286,3 +285,12 @@ var Registrino = (function() {
 
     return Registrino;
 })();
+
+/**
+ * The following allows us to use Registrino as a module in NodeJS
+ */
+(function(self) {
+    if( !(self && self.window) && module && module.exports ) {
+        module.exports = Registrino;
+    }
+})(this);
