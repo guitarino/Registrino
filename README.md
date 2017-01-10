@@ -75,16 +75,14 @@ To understand how this works without delving into API, see commented examples un
 ## Install
 
 ### Browser
-Add
+Add to your HTML page:
 
 ```html
 <script src="path/to/Registrino.js"></script>
 ```
 
-to your HTML page
-
 ### NodeJS
-Include Registrino as a NodeJS module
+Include Registrino as a NodeJS module:
 
 ```javascript
 var Registrino = require('./path/to/Registrino.js');
@@ -137,6 +135,7 @@ There are 2 ways of creating a **Registry**:
     * `Registrino( defineFunction )`
         * `defineFunction( r )` - a function that will be called immediately with a parameter
             * `r` - the new empty **Registry**
+            * Should return an object containing intended public **Registry Functions** and **Variables**
 
 2. Alternative way, through an object definition
     * `Registrino( defineObject )`
