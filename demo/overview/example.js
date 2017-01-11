@@ -1,11 +1,11 @@
-// We can create registry `r1` in 2 different ways:
+// We can create registry in 2 different ways:
 // ================================
 // 1. Preferred way, through a function call
 var r1 = Registrino(function(r) {
     var
         a = r.var( 1 ), // Creates variable `a` with a value 1
         b = r.var( 2 ), // Creates variable `b` with a value 2
-        // Creates a function `c` that will always have a value `a + b`
+        // Creates a function `x` that will always have a value `a + b`
         x = r.fun( a, b ).is(function(a,b) {
             return a + b;
         })
@@ -40,7 +40,7 @@ Registrino(r2, {
 // ================================
 // Getting:
 console.log( 'Should return 3' );
-console.log( '->', r1.x.get() ); // Returns 3 
+console.log( '->', r1.x.get() ); // Returns 3 (because x = a + b = 1 + 2 = 3)
 // Setting:
 r1.a.set(220);
 console.log( 'Should return 222' );
