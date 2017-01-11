@@ -234,27 +234,26 @@ Each **Registry** (eg, the registry `logic` above) is an object that contains 2 
 There are 2 ways of creating a **Registry**:
 
 1. Preferred way, through a function call
-    * `Registrino( defineFunction )`
-        * `defineFunction( r )` - a function that will be called immediately with a parameter
-            * `r` - the new empty **Registry**
-            * Should return an object containing intended public **Registry Functions** and **Variables**
+   * `Registrino( defineFunction )`
+      * `defineFunction( r )` - a function that will be called immediately with a parameter
+         * `r` - the new empty **Registry**
+         * Should return an object containing intended public **Registry Functions** and **Variables**
 
 2. Alternative way, through an object definition
-    * `Registrino( defineObject )`
-        * `defineObject` - an object containing information about the intended **Registry** Functions and Variables. For example,
-
-```javascript
-            Registrino({
-                'revenue': 150,
-                'cost'   : 100,
-                'profit' : {
-                    dependencies: ['revenue', 'cost'],
-                    is: function(revenue, cost) {
-                        return revenue - cost;
-                    }
-                }
-            })
-```
+   * `Registrino( defineObject )`
+      * `defineObject` - an object containing information about the intended **Registry** Functions and Variables. For example,
+      ```javascript
+      Registrino({
+          'revenue': 150,
+          'cost'   : 100,
+          'profit' : {
+              dependencies: ['revenue', 'cost'],
+              is: function(revenue, cost) {
+                  return revenue - cost;
+              }
+          }
+      })
+      ```
 
 It's safer to create a **Registry** in the first way (through a function call), because
 
