@@ -55,6 +55,8 @@ var Registrino = (function() {
      * Evaluates a Registrino Function `fun` with the values of dependencies as arguments
      */
     function getFunVal(fun) {
+        if(typeof fun._fun !== 'function') return fun._value;
+
         var dep_vals = [];
         var old_dep_vals = [];
         
@@ -140,30 +142,32 @@ var Registrino = (function() {
      * `of` method sets dependencies of a Registrino Function
      */
     Fun.prototype.of = function(deps) {
-        var self = this;
+        if(deps !== this._dependencies) {
+            var self = this;
 
-        /**
-         * Cleans the dependencies of being dependent of Registrino Variable / Function `this`
-         */
-        forEach(this._dependencies, function removeDependant(dep) {
-            remove(dep._dependants, self);
-            forEach(dep._dependencies, removeDependant);
-        });
-        
-        this._dependencies = deps;
-        
-        /**
-         * Adds Registrino Variable / Function `this` as dependant to its dependencies
-         */
-        forEach(this._dependencies, function addDependant(dep) {
-            // To avoid repetitions
-            if(!~dep._dependants.indexOf(self)) {
-                dep._dependants.push(self);
-                forEach(dep._dependencies, addDependant);
-            }
-        });
+            /**
+             * Cleans the dependencies of being dependent of Registrino Variable / Function `this`
+             */
+            forEach(this._dependencies, function removeDependant(dep) {
+                remove(dep._dependants, self);
+                forEach(dep._dependencies, removeDependant);
+            });
+            
+            this._dependencies = deps;
+            
+            /**
+             * Adds Registrino Variable / Function `this` as dependant to its dependencies
+             */
+            forEach(this._dependencies, function addDependant(dep) {
+                // To avoid repetitions
+                if(!~dep._dependants.indexOf(self)) {
+                    dep._dependants.push(self);
+                    forEach(dep._dependencies, addDependant);
+                }
+            });
 
-        update(this);
+            this.set( getFunVal(this) );
+        }
         return this;
     };
 
@@ -253,13 +257,13 @@ var Registrino = (function() {
         return registry;
     };
 
-    Registrino.createVariable = function(value) {
+    Registrino.var = function(value) {
         var v = new Fun();
         v.set(value);
         return v;
     };
 
-    Registrino.createFunction = function() {
+    Registrino.fun = function() {
         var args = Array.prototype.slice.call(arguments, 0);
         var fun = new Fun();
         fun.of(args);
@@ -276,12 +280,12 @@ var Registrino = (function() {
     /**
      * Every registry has a method `var` to create a Registrino Variable
      */
-    r.prototype.var = Registrino.createVariable;
+    r.prototype.var = Registrino.var;
 
     /**
      * Every registry has a method `fun` to create a Registrino Function
      */
-    r.prototype.fun = Registrino.createFunction;
+    r.prototype.fun = Registrino.fun;
 
     return Registrino;
 })();
