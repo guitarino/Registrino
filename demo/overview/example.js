@@ -2,6 +2,7 @@
 // ================================
 // 1. Preferred way, through a function call
 var r1 = Registrino(function(r) {
+    // Note: r === Registrino. We use it in an argument as a shortcut.
     var
         a = r.var( 1 ), // Creates variable `a` with a value 1
         b = r.var( 2 ), // Creates variable `b` with a value 2
@@ -57,7 +58,7 @@ console.log( 'Should return 6' );
 console.log( '->', r1.x.get() ); // Returns 6 (because x = c * b = 3 * 2 = 6)
 
 // A function can depend on the previous values of its dependencies as well
-r1.x.is(function(a,b, pre_a, pre_b) {
+r1.x.is(function(a, b, pre_a, pre_b) {
     return a * b + pre_a * pre_b;
 });
 r1.b.set(10);

@@ -70,7 +70,7 @@ var Registrino = (function() {
         });
 
         return fun._fun.apply(
-            null,
+            fun,
 
             // We concatenate new and previous dependency
             // values and use those as arguments
@@ -209,7 +209,7 @@ var Registrino = (function() {
 
         if(arguments.length <= 1) {
             define = arguments[0];
-            registry = new r();
+            registry = {};
         }
         
         else if(arguments.length > 1) {
@@ -219,7 +219,7 @@ var Registrino = (function() {
         
         // The safest way to define a registry, through a function call
         if( typeof define === 'function' ) {
-            var vars = define( registry );
+            var vars = define( Registrino );
             
             if(isObject(vars)) {
                 for(var vname in vars) {
@@ -240,7 +240,7 @@ var Registrino = (function() {
                         [];
                     
                     registry[vname] = (
-                        registry.fun.apply(null,
+                        Registrino.fun.apply(null,
                             dependencies.map(function(depname) {
                                 return registry[depname];
                             })
@@ -249,7 +249,7 @@ var Registrino = (function() {
                         .is(vdescr.is)
                     );
                 } else {
-                    registry[vname] = registry.var(vdescr);
+                    registry[vname] = Registrino.var(vdescr);
                 }
             }
         }
@@ -269,23 +269,6 @@ var Registrino = (function() {
         fun.of(args);
         return fun;
     };
-
-    /**
-     * Creates an instance of a registry
-     */
-    var r = function() {
-        return this;
-    };
-
-    /**
-     * Every registry has a method `var` to create a Registrino Variable
-     */
-    r.prototype.var = Registrino.var;
-
-    /**
-     * Every registry has a method `fun` to create a Registrino Function
-     */
-    r.prototype.fun = Registrino.fun;
 
     return Registrino;
 })();

@@ -78,6 +78,7 @@ We can create registry in 2 different ways:
 1. Preferred way, through a function call
    ```javascript
    var r1 = Registrino(function(r) {
+       // Note: r === Registrino. We use it in an argument as a shortcut.
        var
            a = r.var( 1 ), // Creates variable `a` with a value 1
            b = r.var( 2 ), // Creates variable `b` with a value 2
@@ -147,14 +148,14 @@ Registrino(r2, {
 A function can depend on the previous values of its dependencies as well:
 
 ```javascript
-r1.x.is(function(a,b, pre_a, pre_b) {
+r1.x.is(function(a, b, pre_a, pre_b) {
     return a * b + pre_a * pre_b;
 });
 r1.b.set(10);
 r1.x.get(); // Returns 36 (because x = a * b + pre_a * pre_b = 3 * 10 + 3 * 2 = 36)
 ```
 
-Functions from one registry can depend on functions / variables from the other registries:
+Functions from one registry can just as easily depend on functions / variables from the other registries:
 
 ```javascript
 Registrino(r2, function(r) {
@@ -166,7 +167,7 @@ Registrino(r2, function(r) {
 r2.y.get(); // Returns 18 (because y = x / 2 = 36 / 2 = 18)
 ```
 
-We can register a function / variable outside of a registry by using `Registrino` instead of a registry object:
+We can easily register a function / variable outside of a registry:
 
 ```javascript
 Registrino.fun(r2.y).is(function(y) {
@@ -190,16 +191,16 @@ Include Registrino as a NodeJS module:
 var Registrino = require('./path/to/Registrino.js');
 ```
 
-## Definitions for API
+## Definitions for API Reference
 These definitions will be useful for understanding API:
 
 **Registry Function** - an object that describes a function by containing information about its dependencies (*other* Registry Functions / Variables that it depends on) and its dependants (*other* Registry Functions that depend on it)
 
 **Registry Variable** - essentially a Registry Function with no dependencies and no function that describes it. It's just an object containing information about its current value and its dependants.
 
-**Registry** - an object containing a set of Registry Functions and Variables, as well as a means (rather, a shortcut) for creating Registry Functions and Variables.
+**Registry** - just an object containing a set of Registry Functions and Variables.
 
-## API
+## API Reference
 ### Registry Function / Variable
 Each instance of **Registry Function** or **Variable** (eg, `logic.profit` or `logic.revenue` above) contains the following methods in its prototype:
 
@@ -218,26 +219,23 @@ Each instance of **Registry Function** or **Variable** (eg, `logic.profit` or `l
 
 * `.get( )` returns the current value.
 
-### Registry Object
-Each **Registry** (eg, the registry `logic` above) is an object that contains 2 convenience methods (in its prototype) for creating **Registry Functions** and **Variables**:
-
-1. `.var( value )`, where `value` is the initial value for the variable.
-
-    Initializes and returns the **Registry Variable** with the provided initial value.
-
-2. `.fun( [dep1[, ... [, depN]]] )`, where `dep1`, ... `depN` are **Registry Functions** or **Variables** as function's dependencies.
-
-    Initializes and returns **Registry Function** with the provided dependencies.
-
 ### Registrino() function
+**Registrino** is a function for creating / adding items to a **Registry** (eg, the registry `logic` above). Registrino, as an object, also contains 2 convenience methods for creating **Registry Functions** and **Variables**:
+
+1. `Registrino.var( value )`, where `value` is the initial value for the variable.
+   Initializes and returns the **Registry Variable** with the provided initial value.
+
+2. `Registrino.fun( [dep1[, ... [, depN]]] )`, where `dep1`, ... `depN` are **Registry Functions** or **Variables** as function's dependencies.
+   Initializes and returns **Registry Function** with the provided dependencies.
+
 #### Creating a new registry
 There are 2 ways of creating a **Registry**:
 
 1. Preferred way, through a function call
    * `Registrino( defineFunction )`
       * `defineFunction( r )` - a function that will be called immediately with a parameter
-         * `r` - the new empty **Registry**
-         * Should return an object containing intended public **Registry Functions** and **Variables**
+         * `r` - a shortcut to a **Registrino** object
+         * Should return an object containing intended **Registry Functions** and **Variables** that will appear in the **Registry**
 
 2. Alternative way, through an object definition
    * `Registrino( defineObject )`
@@ -268,16 +266,7 @@ You can also use an existing **Registry** instead of creating a new, if you use 
 
 * `Registrino( registry, defineObject )`
 
-In both cases, you can add new **Registry Functions** and **Variables** to an already existing `registry`.
-
-### Without Registry
-It's possible to create **Registry Functions** and **Variables** without creating a new instance of a **Registry**, even though it shouldn't be costly to use `Registrino()`. For that, use
-
-* `Registrino.var( value )`, and
-
-* `Registrino.fun( [dep1[, ... [, depN]]] )`
-
-You can use both methods in the same way as **Registry** object's properties `.var` and `.fun` but without actually having a **Registry**.
+In both cases, the returned properties will be added to an already existing `registry`.
 
 ## License
 [MIT License](https://github.com/guitarino/Registrino/blob/master/LICENSE)
