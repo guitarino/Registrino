@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": "MIT",
   "name": "registrino",
   "description": "A simple and intuitive way of doing incremental and reactive programming",
