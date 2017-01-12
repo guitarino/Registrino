@@ -1,0 +1,28 @@
+{
+  "version": "0.1.0",
+  "license": "MIT",
+  "name": "registrino",
+  "description": "A simple and intuitive way of doing incremental and reactive programming",
+  "keywords": [
+    "reactive",
+    "incremental",
+    "programming",
+    "dependency",
+    "registry",
+    "variables",
+    "functions",
+    "registrino"
+  ],
+  "author": {
+    "name": "guitarino"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/guitarino/Registrino.git"
+  },
+  "main": "./build/Registrino.js",
+  "scripts": {
+    "build": "uglifyjs -o ./build/Registrino.js ./src/Registrino.js",
+    "install-global-dev": "npm install -g uglify-js@1"
+  }
+}

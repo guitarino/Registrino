@@ -176,6 +176,7 @@ Registrino.fun(r2.y).is(function(y) {
 ```
 
 ## Install
+The utility is tiny, just about 0.9K minified and gzipped (2K minified).
 
 ### Browser
 Add to your HTML page:
@@ -191,7 +192,7 @@ Include Registrino as a NodeJS module:
 var Registrino = require('./path/to/Registrino.js');
 ```
 
-## Definitions for API Reference
+## Definitions for API
 These definitions will be useful for understanding API:
 
 **Registry Function** - an object that describes a function by containing information about its dependencies (*other* Registry Functions / Variables that it depends on) and its dependants (*other* Registry Functions that depend on it)
@@ -200,7 +201,7 @@ These definitions will be useful for understanding API:
 
 **Registry** - just an object containing a set of Registry Functions and Variables.
 
-## API Reference
+## API
 ### Registry Function / Variable
 Each instance of **Registry Function** or **Variable** (eg, `logic.profit` or `logic.revenue` above) contains the following methods in its prototype:
 
