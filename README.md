@@ -92,7 +92,7 @@ We can create registry in 2 different ways:
    });
    ```
 
-2. Alternative way, through an object
+2. Alternative way, through an object:
    ```javascript
    var r2 = Registrino({
        'a' : 1,
