@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "MIT",
   "name": "revalue",
   "description": "A simple and intuitive way of doing incremental and reactive programming",
@@ -20,7 +20,7 @@
     "type": "git",
     "url": "git://github.com/guitarino/revalue.git"
   },
-  "main": "./build/revalue.js",
+  "main": "./src/revalue.js",
   "scripts": {
     "build": "uglifyjs -o ./build/revalue.js ./src/revalue.js",
     "install-global-dev": "npm install -g uglify-js@1"
