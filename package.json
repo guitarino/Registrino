@@ -1,5 +1,5 @@
 {
-  "version": "1.1.1",
+  "version": "1.1.2",
   "license": "MIT",
   "name": "revalue",
   "description": "A simple and intuitive way of doing incremental and reactive programming",
@@ -22,7 +22,8 @@
   },
   "main": "./src/revalue.js",
   "scripts": {
-    "build": "uglifyjs -o ./build/revalue.js ./src/revalue.js",
-    "install-global-dev": "npm install -g uglify-js@1"
+    "prepublish": "npm run build",
+    "build": "browserify ./src/revalue.browser.js -o ./build/revalue.js && uglifyjs -o ./build/revalue.js ./build/revalue.js && concat -o ./build/revalue.js ./src/license.js ./build/revalue.js",
+    "install-global-dev": "npm install -g uglify-js@1 && npm install -g browserify && npm install -g concat"
   }
 }

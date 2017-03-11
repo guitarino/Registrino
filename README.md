@@ -176,7 +176,7 @@ revalue.fun(r2.y).is(function(y) {
 ```
 
 ## Install
-The utility is tiny, just about 0.9K minified and gzipped (2K minified).
+The utility is tiny, just about 1.2K minified and gzipped (3K minified).
 
 ### Browser
 Add to your HTML page:

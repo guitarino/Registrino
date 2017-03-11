@@ -1,0 +1,1 @@
+global.revalue = require('./revalue.js');

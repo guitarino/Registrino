@@ -1,5 +1,5 @@
 /*!
-Copyright (c) 2016 guitarino
+Copyright (c) 2016 Kirill Shestakov
 MIT License
 */
 
@@ -327,11 +327,4 @@ var revalue = (function() {
     return revalue;
 })();
 
-/**
- * The following allows us to use revalue as a module in NodeJS
- */
-(function(self) {
-    if( !(self && self.window) && module && module.exports ) {
-        module.exports = revalue;
-    }
-})(this);
+module.exports = revalue;
