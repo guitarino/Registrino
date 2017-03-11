@@ -38,7 +38,7 @@
 3. `revalue.isVar( param )`, где `param` - это любой параметр.
    Возвращает true если `param` является **Переменной Регистра**, иначе false.
 
-4. `revalue.isFun( param )`, where `param` is any parameter to check.
+4. `revalue.isFun( param )`, где `param` - это любой параметр.
    Возвращает true если `param` является **Функцией Регистра**, иначе false.
 
 #### Создание нового регистра
