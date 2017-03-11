@@ -3,12 +3,13 @@ Copyright (c) 2016 guitarino
 MIT License
 */
 
-var Registrino = (function() {
+var revalue = (function() {
     'use strict';
     // <some helpful methods>
 
     /**
      * Checks if an argument is an array
+     * @private
      */
     var isArray = Array.isArray ? Array.isArray : function(arg) {
         return Object.prototype.toString.call(arg) === '[object Array]';
@@ -16,6 +17,7 @@ var Registrino = (function() {
 
     /**
      * Iterates over an array; return false to break from loop
+     * @private
      */
     function forEach(arr, fun) {
         for(var i = 0; i < arr.length; i++) {
@@ -28,6 +30,7 @@ var Registrino = (function() {
     
     /**
      * Removes an `item` from array `arr`
+     * @private
      */
     function remove(arr, item) {
         var index = arr.indexOf(item);
@@ -41,6 +44,7 @@ var Registrino = (function() {
 
     /**
      * Returns true if the argument is an object; otherwise false
+     * @private
      */
     function isObject(arg) {
         if(typeof arg === 'object' && arg !== null) {
@@ -52,7 +56,8 @@ var Registrino = (function() {
     // </some helpful methods>
 
     /**
-     * Evaluates a Registrino Function `fun` with the values of dependencies as arguments
+     * Evaluates a revalue function `fun` with the values of dependencies as arguments
+     * @private
      */
     function getFunVal(fun) {
         if(typeof fun._fun !== 'function') return fun._value;
@@ -79,8 +84,9 @@ var Registrino = (function() {
     }
 
     /**
-     * Checks if update of a Registrino Function `fun` is needed.
+     * Checks if update of a revalue function `fun` is needed.
      * It is needed if any dependencies have `_old_value` property. 
+     * @private
      */
     function isUpdateNeeded(fun) {
         var dependenciesChanged = false;
@@ -96,7 +102,8 @@ var Registrino = (function() {
     }
 
     /**
-     * Clears `_old_value` property of dependants of a Registrino Function `fun`
+     * Clears `_old_value` property of dependants of a revalue function `fun`
+     * @private
      */
     function cleanUpdate(fun) {
         fun._old_value = null;
@@ -111,12 +118,13 @@ var Registrino = (function() {
     }
 
     /**
-     * Update function iterates over dependants and updates Registrino Functions
+     * Update function iterates over dependants and updates revalue functions
      * that need update.
+     * @private
      */
     function update(fun) {
         forEach(fun._dependants, function(dependant) {
-            // Dependant might by mistake be a Registrino Variable, not a Function
+            // Dependant might by mistake be a revalue variable, not a function
             if(dependant._fun && isUpdateNeeded(dependant)) {
                 var new_val = getFunVal(dependant);
                 if(new_val !== dependant._value) {
@@ -131,7 +139,9 @@ var Registrino = (function() {
     }
 
     /**
-     * Creates an istance of Registrino Variable / Function
+     * Creates an istance of revalue variable / function
+     * @constructor
+     * @param {Object[]} deps - dependencies of revalue variable / function
      */
     var Fun = function(deps) {
         this._dependencies = [];
@@ -139,15 +149,16 @@ var Registrino = (function() {
     };
     
     /**
-     * `of` method sets dependencies of a Registrino Function
+     * `of` method sets dependencies of a revalue function
+     * @public
+     * @param {Object[]} deps - dependencies of revalue variable / function
+     * @returns {Object} the revalue function itself for chaining
      */
     Fun.prototype.of = function(deps) {
         if(deps !== this._dependencies) {
             var self = this;
 
-            /**
-             * Cleans the dependencies of being dependent of Registrino Variable / Function `this`
-             */
+            // Cleans the dependencies of being dependent of revalue variable / function `this`
             forEach(this._dependencies, function removeDependant(dep) {
                 remove(dep._dependants, self);
                 forEach(dep._dependencies, removeDependant);
@@ -155,9 +166,7 @@ var Registrino = (function() {
             
             this._dependencies = deps;
             
-            /**
-             * Adds Registrino Variable / Function `this` as dependant to its dependencies
-             */
+            // Adds revalue variable / function `this` as dependant to its dependencies
             forEach(this._dependencies, function addDependant(dep) {
                 // To avoid repetitions
                 if(!~dep._dependants.indexOf(self)) {
@@ -172,7 +181,11 @@ var Registrino = (function() {
     };
 
     /**
-     * `is` sets a dependency function of a Registrino Function
+     * `is` sets a dependency function of a revalue function
+     * @public
+     * @param {Function} fun - the function that determines other
+     *  relationship between this and other revalue functions / variables
+     * @returns {Object} the revalue function itself for chaining
      */
     Fun.prototype.is = function(fun) {
         if(this._fun !== fun) {
@@ -183,7 +196,10 @@ var Registrino = (function() {
     };
 
     /**
-     * `set` sets a current value of a Registrino Variable / Function
+     * `set` sets a current value of a revalue variable / function
+     * @public
+     * @param {*} value - the value to set to a revalue variable / function
+     * @returns {Object} the revalue variable / function itself for chaining
      */
     Fun.prototype.set = function(value) {
         if(this._value !== value) {
@@ -195,16 +211,22 @@ var Registrino = (function() {
     };
 
     /**
-     * `get` gets a current value of a Registrino Variable / Function
+     * `get` gets a current value of a revalue variable / function
+     * @public
+     * @returns the value of the revalue variable / function
      */
     Fun.prototype.get = function() {
         return this._value;
     };
 
     /**
-     * Convenience method for defining registries / Registrino Variables / Functions
+     * Convenience function for defining registries / revalue variables / functions
+     * @param {Object} [registry] - in case we want to add properties to an
+     *  existing registry instad of creating new
+     * @param {Function|Object} define - obj / function that will determine how
+     *  the registry should be defined
      */
-    var Registrino = function() {
+    var revalue = function() {
         var registry, define;
 
         if(arguments.length <= 1) {
@@ -219,7 +241,7 @@ var Registrino = (function() {
         
         // The safest way to define a registry, through a function call
         if( typeof define === 'function' ) {
-            var vars = define( Registrino );
+            var vars = define( revalue );
             
             if(isObject(vars)) {
                 for(var vname in vars) {
@@ -240,7 +262,7 @@ var Registrino = (function() {
                         [];
                     
                     registry[vname] = (
-                        Registrino.fun.apply(null,
+                        revalue.fun.apply(null,
                             dependencies.map(function(depname) {
                                 return registry[depname];
                             })
@@ -249,7 +271,7 @@ var Registrino = (function() {
                         .is(vdescr.is)
                     );
                 } else {
-                    registry[vname] = Registrino.var(vdescr);
+                    registry[vname] = revalue.var(vdescr);
                 }
             }
         }
@@ -257,27 +279,59 @@ var Registrino = (function() {
         return registry;
     };
 
-    Registrino.var = function(value) {
+    /**
+     * A convenience method to create revalue variable
+     * @static
+     * @param {*} value - any value to initialize the variable with
+     * @returns {Object} the variable itself to allow chaining
+     */
+    revalue.var = function(value) {
         var v = new Fun();
         v.set(value);
         return v;
     };
 
-    Registrino.fun = function() {
+    /**
+     * A convenience method to create revalue function
+     * @static
+     * @param {...Object} - dependency revalue variables / functions
+     * @returns {Object} the variable itself to allow chaining
+     */
+    revalue.fun = function() {
         var args = Array.prototype.slice.call(arguments, 0);
         var fun = new Fun();
         fun.of(args);
         return fun;
     };
 
-    return Registrino;
+    /**
+     * Method to check if the parameter is a revalue variable
+     * @static
+     * @param {*} param - any parameter to check
+     * @returns {Boolean} true if parameter is a revalue variable, false otherwise
+     */
+    revalue.isVar = function(param) {
+        return param instanceof Fun && !("_fun" in param);
+    };
+
+    /**
+     * Method to check if the parameter is a revalue function
+     * @static
+     * @param {*} param - any parameter to check
+     * @returns {Boolean} true if parameter is a revalue function, false otherwise
+     */
+    revalue.isFun = function(param) {
+        return param instanceof Fun && ("_fun" in param);
+    };
+
+    return revalue;
 })();
 
 /**
- * The following allows us to use Registrino as a module in NodeJS
+ * The following allows us to use revalue as a module in NodeJS
  */
 (function(self) {
     if( !(self && self.window) && module && module.exports ) {
-        module.exports = Registrino;
+        module.exports = revalue;
     }
 })(this);

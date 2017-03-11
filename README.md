@@ -1,4 +1,4 @@
-# Registrino
+# revalue (Reactive Value)
 A simple and intuitive way of doing incremental and reactive programming
 
 ## Idea
@@ -6,13 +6,13 @@ In incremental or reactive programming, when a piece of data changes, only the o
 
 Standard libraries for reactive programming are powerful, but are more conceptually involved.
 
-The idea behind `Registrino` is simple: we register some variables and functions that depend on *other* variables and/or functions.
+The idea behind `revalue` is simple: we register some variables and functions that depend on *other* variables and/or functions.
 
 For example,
 
 ```javascript
 // This creates a registry `logic`
-var logic = Registrino(function(r) {
+var logic = revalue(function(r) {
     var
         revenue = r.var( 150 ), // Creates a variable `revenue` with a value 150
         cost    = r.var( 100 ), // Creates a variable `cost` with a value 100
@@ -70,15 +70,15 @@ This approach is similar to a spreadsheet-like functionality and can be especial
 * Creating customization system for [Custom Elements](https://developers.google.com/web/fundamentals/getting-started/primers/customelements)
 
 ## How to (TL;DR)
-You can see commented examples under **[/demo](https://github.com/guitarino/Registrino/tree/master/demo)** folder for extra practice. The following is just an overview of all available features.
+You can see commented examples under **[/demo](https://github.com/guitarino/revalue/tree/master/demo)** folder for extra practice. The following is just an overview of all available features.
 
 ### Working with registries
 We can create registry in 2 different ways:
 
 1. Preferred way, through a function call
    ```javascript
-   var r1 = Registrino(function(r) {
-       // Note: r === Registrino. We use it in an argument as a shortcut.
+   var r1 = revalue(function(r) {
+       // Note: r === revalue. We use it in an argument as a shortcut.
        var
            a = r.var( 1 ), // Creates variable `a` with a value 1
            b = r.var( 2 ), // Creates variable `b` with a value 2
@@ -94,7 +94,7 @@ We can create registry in 2 different ways:
 
 2. Alternative way, through an object:
    ```javascript
-   var r2 = Registrino({
+   var r2 = revalue({
        'a' : 1,
        'b' : 2,
        'x' : {
@@ -109,12 +109,12 @@ We can create registry in 2 different ways:
 We can also add some variables to an existing registry by using the registry as the first argument:
 
 ```javascript
-Registrino(r1, function(r) {
+revalue(r1, function(r) {
     var c = r.var( 3 );
     return {c: c};
 });
 // Alternatively,
-Registrino(r2, {
+revalue(r2, {
     c: 3
 });
 ```
@@ -158,7 +158,7 @@ r1.x.get(); // Returns 36 (because x = a * b + pre_a * pre_b = 3 * 10 + 3 * 2 = 
 Functions from one registry can just as easily depend on functions / variables from the other registries:
 
 ```javascript
-Registrino(r2, function(r) {
+revalue(r2, function(r) {
     var y = r.fun(r1.x).is(function(x) {
         return x / 2;
     });
@@ -170,7 +170,7 @@ r2.y.get(); // Returns 18 (because y = x / 2 = 36 / 2 = 18)
 We can easily register a function / variable outside of a registry:
 
 ```javascript
-Registrino.fun(r2.y).is(function(y) {
+revalue.fun(r2.y).is(function(y) {
     document.getElementById('test').textContent = y;
 });
 ```
@@ -182,92 +182,17 @@ The utility is tiny, just about 0.9K minified and gzipped (2K minified).
 Add to your HTML page:
 
 ```html
-<script src="path/to/Registrino.js"></script>
+<script src="path/to/revalue.js"></script>
 ```
 
 ### NodeJS
-Include Registrino as a NodeJS module:
+Include revalue as a NodeJS module:
 
 ```javascript
-var Registrino = require('./path/to/Registrino.js');
+var revalue = require('./path/to/revalue.js');
 ```
 
-## Definitions for API
-These definitions will be useful for understanding API:
-
-**Registry Function** - an object that describes a function by containing information about its dependencies (*other* Registry Functions / Variables that it depends on) and its dependants (*other* Registry Functions that depend on it)
-
-**Registry Variable** - essentially a Registry Function with no dependencies and no function that describes it. It's just an object containing information about its current value and its dependants.
-
-**Registry** - just an object containing a set of Registry Functions and Variables.
-
-## API
-### Registry Function / Variable
-Each instance of **Registry Function** or **Variable** (eg, `logic.profit` or `logic.revenue` above) contains the following methods in its prototype:
-
-* `.of( deps )`, where `deps` is an array specifying the intended dependencies.
-    
-    Sets the dependencies and returns the **Registry Function** itself to allow chaining.
-
-* `.is( fun )`, where `fun` is the function according to which the value will be calculated.
-    
-    Sets the function and returns the **Registry Function** itself to allow chaining.
-    * Note: when the **Function**'s dependencies changed, `fun` will be called with parameters `val1`, ... `valN`, `old_val1`, ... `old_valN`, which are the new values of its dependencies followed by old values of those same dependencies. The values will appear in the same order as specified when creating the **Function** or specifying dependencies with `.of( deps )`.
-
-* `.set( value )`, where `value` is the new value.
-    
-    Sets the value; the change will trigger an update of its dependants. Returns the **Registry Function / Variable** itself to allow chaining.
-
-* `.get( )` returns the current value.
-
-### Registrino() function
-**Registrino** is a function for creating / adding items to a **Registry** (eg, the registry `logic` above). Registrino, as an object, also contains 2 convenience methods for creating **Registry Functions** and **Variables**:
-
-1. `Registrino.var( value )`, where `value` is the initial value for the variable.
-   Initializes and returns the **Registry Variable** with the provided initial value.
-
-2. `Registrino.fun( [dep1[, ... [, depN]]] )`, where `dep1`, ... `depN` are **Registry Functions** or **Variables** as function's dependencies.
-   Initializes and returns **Registry Function** with the provided dependencies.
-
-#### Creating a new registry
-There are 2 ways of creating a **Registry**:
-
-1. Preferred way, through a function call
-   * `Registrino( defineFunction )`
-      * `defineFunction( r )` - a function that will be called immediately with a parameter
-         * `r` - a shortcut to a **Registrino** object
-         * Should return an object containing intended **Registry Functions** and **Variables** that will appear in the **Registry**
-
-2. Alternative way, through an object definition
-   * `Registrino( defineObject )`
-      * `defineObject` - an object containing information about the intended **Registry** Functions and Variables. For example,
-      ```javascript
-      Registrino({
-          'revenue': 150,
-          'cost'   : 100,
-          'profit' : {
-              dependencies: ['revenue', 'cost'],
-              is: function(revenue, cost) {
-                  return revenue - cost;
-              }
-          }
-      })
-      ```
-
-It's safer to create a **Registry** in the first way (through a function call), because
-
-* It ensures that dependencies are resolved. You would not be able to create a **Registry Function** without first creating all of its dependencies. If the **Registry** is created from an object, you will need to make sure not to define a property before its dependencies.
-
-* It is more flexible in that it allows you to conveniently create some **Registry Functions** without adding them to the **Registry**.
-
-#### Modifying a registry
-You can also use an existing **Registry** instead of creating a new, if you use provide the **Registry** as the first argument. Namely,
-
-* `Registrino( registry, defineFunction )`, or
-
-* `Registrino( registry, defineObject )`
-
-In both cases, the returned properties will be added to an already existing `registry`.
+## [See API Reference](https://github.com/guitarino/revalue/blob/master/API.md)
 
 ## License
-[MIT License](https://github.com/guitarino/Registrino/blob/master/LICENSE)
+[MIT License](https://github.com/guitarino/revalue/blob/master/LICENSE)

@@ -1,7 +1,7 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
-  "name": "registrino",
+  "name": "revalue",
   "description": "A simple and intuitive way of doing incremental and reactive programming",
   "keywords": [
     "reactive",
@@ -11,18 +11,18 @@
     "registry",
     "variables",
     "functions",
-    "registrino"
+    "revalue"
   ],
   "author": {
-    "name": "guitarino"
+    "name": "Kirill Shestakov"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/guitarino/Registrino.git"
+    "url": "git://github.com/guitarino/revalue.git"
   },
-  "main": "./build/Registrino.js",
+  "main": "./build/revalue.js",
   "scripts": {
-    "build": "uglifyjs -o ./build/Registrino.js ./src/Registrino.js",
+    "build": "uglifyjs -o ./build/revalue.js ./src/revalue.js",
     "install-global-dev": "npm install -g uglify-js@1"
   }
 }

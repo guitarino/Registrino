@@ -16,7 +16,7 @@
     
     // Creating registry `logic`. An alternative way of defining a registry.
     // It is recommended to define the registry through a function call instead.
-    var logic = Registrino({
+    var logic = revalue({
         // Variables for produced amount, cost and sold amount and cost,
         // taking input's `value` attribute as initial value.
         'details_produced': parseInt(elements.details_produced.value, 10),
@@ -50,7 +50,7 @@
     });
 
     // Creating registry `errors` through a function (preferred way).
-    var errors = Registrino(function(r) {
+    var errors = revalue(function(r) {
         var
             sold_more_produced = r.fun(logic.details_produced, logic.details_sold).is(function(produced, sold) {
                 console.log('`error.sold_more_produced` update');
@@ -90,9 +90,9 @@
 
     // This will create a function that automatically depends on all error variables. It will
     // update the list of error descriptions any time a variable changes.
-    // Note: we're using `Registrino.fun` the same way we would use `r.fun`.
-    // You can also use `Registrino.var` to replace `r.var` (Refer to API Ref).
-    var error_list = Registrino.fun.apply(null, error_variables).is(function() {
+    // Note: we're using `revalue.fun` the same way we would use `r.fun`.
+    // You can also use `revalue.var` to replace `r.var` (Refer to API Ref).
+    var error_list = revalue.fun.apply(null, error_variables).is(function() {
         console.log('`error_list` update');
         // Because arguments consist of both new and previous values, the number of error variables is half
         var variables = arguments.length / 2;
@@ -135,19 +135,19 @@
 
     // Now the UI functions.
 
-    Registrino.fun(logic.total_cost).is(function(cost) {
+    revalue.fun(logic.total_cost).is(function(cost) {
         elements.total_cost.textContent = cost;
     });
 
-    Registrino.fun(logic.total_revenue).is(function(cost) {
+    revalue.fun(logic.total_revenue).is(function(cost) {
         elements.total_revenue.textContent = cost;
     });
 
-    Registrino.fun(logic.profit).is(function(cost) {
+    revalue.fun(logic.profit).is(function(cost) {
         elements.profit.textContent = cost;
     });
 
-    Registrino.fun(error_list).is(function(descr) {
+    revalue.fun(error_list).is(function(descr) {
         elements.error.innerHTML = descr.map(function(error) {
             return "<p>" + error + "</p>";
         }).join('');

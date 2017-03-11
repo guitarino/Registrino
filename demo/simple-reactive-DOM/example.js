@@ -1,9 +1,8 @@
 var logic = (function() {
-
     var input = document.getElementById('nameIn');
     var output = document.getElementById('nameOut');
 
-    var logic = Registrino(function(r) {
+    var logic = revalue(function(r) {
         // Registering a simple variable for name,
         // taking `input.value` as initial value
         var name = r.var( input.value );
@@ -27,7 +26,7 @@ var logic = (function() {
     });
 
     // Creating a function outside of Registry (updates input value)
-    Registrino.fun(logic.name).is(function(name) {
+    revalue.fun(logic.name).is(function(name) {
         input.value = name;
     });
 

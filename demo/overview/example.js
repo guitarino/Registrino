@@ -1,8 +1,8 @@
 // We can create registry in 2 different ways:
 // ================================
 // 1. Preferred way, through a function call
-var r1 = Registrino(function(r) {
-    // Note: r === Registrino. We use it in an argument as a shortcut.
+var r1 = revalue(function(r) {
+    // Note: r === revalue. We use it in an argument as a shortcut.
     var
         a = r.var( 1 ), // Creates variable `a` with a value 1
         b = r.var( 2 ), // Creates variable `b` with a value 2
@@ -15,7 +15,7 @@ var r1 = Registrino(function(r) {
     return {a:a, b:b, x:x}
 });
 // 2. Alternative way, through an object
-var r2 = Registrino({
+var r2 = revalue({
     'a' : 1,
     'b' : 2,
     'x' : {
@@ -28,12 +28,12 @@ var r2 = Registrino({
 
 // We can also add some variables to the existing registry
 // by using the registry as the first argument:
-Registrino(r1, function(r) {
+revalue(r1, function(r) {
     var c = r.var( 3 );
     return {c: c};
 });
 // Alternatively,
-Registrino(r2, {
+revalue(r2, {
     c: 3
 });
 
@@ -66,7 +66,7 @@ console.log( 'Should return 36' );
 console.log( '->', r1.x.get() ); // Returns 36 (because x = a * b + pre_a * pre_b = 3 * 10 + 3 * 2 = 36)
 
 // Functions from one registry can depend on functions / variables from the other registries
-Registrino(r2, function(r) {
+revalue(r2, function(r) {
     var y = r.fun(r1.x).is(function(x) {
         return x / 2;
     });
@@ -76,6 +76,6 @@ console.log( 'Should return 18' );
 console.log( '->', r2.y.get() ); // Returns 18 (because y = x / 2 = 36 / 2 = 18)
 
 // Registering a function outside of a registry
-Registrino.fun(r2.y).is(function(y) {
+revalue.fun(r2.y).is(function(y) {
     document.getElementById('test').textContent = y;
 });
