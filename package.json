@@ -24,6 +24,6 @@
   "scripts": {
     "prepublish": "npm run build",
     "build": "browserify ./src/revalue.browser.js -o ./build/revalue.js && uglifyjs -o ./build/revalue.js ./build/revalue.js && concat -o ./build/revalue.js ./src/license.js ./build/revalue.js",
-    "install-global-dev": "npm install -g uglify-js@1 && npm install -g browserify && npm install -g concat"
+    "install-global-deps": "npm install -g uglify-js@1 && npm install -g browserify && npm install -g concat"
   }
 }
